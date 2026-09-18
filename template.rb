@@ -38,20 +38,6 @@ after_bundle do
   run "bundle lock --add-platform=x86_64-linux-musl > /dev/null 2>&1"
   run "bundle lock --add-platform=aarch64-linux-musl > /dev/null 2>&1"
 
-  # Map the Rails Master Key to .env for the CLI tool
-  if File.exist?("config/master.key")
-    key = File.read("config/master.key").strip
-    File.open(".env", "a") { |f| f.puts "\nRAILS_MASTER_KEY=#{key}" }
-  end
-
   say "🤖 Running deploy-stack in headless mode...\n", :blue
   run "npx --yes deploy-stack@latest --headless --framework=rails --region=#{aws_region} --needsDatabase=#{db_flag} --port=#{port}"
-
-  # Inject the Master Key directly into Terraform so Fargate receives it on the first apply
-  if Dir.exist?("terraform") && File.exist?("config/master.key")
-    key = File.read("config/master.key").strip
-    File.open("terraform/terraform.auto.tfvars", "a") do |f|
-      f.puts %(\nrails_master_key = "#{key}")
-    end
-  end
 end

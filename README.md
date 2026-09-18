@@ -37,11 +37,8 @@ Navigate into your newly created application directory. Before pushing to GitHub
 ```bash
 cd my_app
 
-# 1. Provision the AWS ECR, VPC, ALB, and ECS Cluster
 npx --yes deploy-stack apply
 
-# 2. Encrypt and push your Rails Master Key into AWS SSM
-npx --yes deploy-stack secrets push .env
 ```
 
 ## 🔄 Automation (Day 2)
