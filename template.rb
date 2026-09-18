@@ -24,6 +24,9 @@ if needs_db
   gsub_file "config/database.yml", /adapter: sqlite3/, "adapter: postgresql", verbose: false
 end
 
+say "⚙️  Configuring AWS ALB health check route...", :blue
+route 'root "rails/health#show"'
+
 say "🛡️  Patching default Ruby library CVEs...", :blue
 gem "erb", ">= 4.0.4"
 gem "net-imap", ">= 0.4.24"
